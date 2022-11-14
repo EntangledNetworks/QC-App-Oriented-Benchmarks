@@ -2,6 +2,40 @@ import numpy as np
 
 import qiskit.providers.aer.noise as noise
 
+def c_noise_2qb(fid):
+    '''
+    Currently implements dephasing.
+    '''
+    p = np.sqrt((5*fid-1)/4)
+    pZ = np.array([
+        [1,0],
+        [0,-1]
+    ])
+    id2 = np.eye(2)
+    op1 = (np.kron(id2, id2), p**2)
+    op2 = (np.kron(id2, pZ ), p*(1-p))
+    op3 = (np.kron(pZ,  id2), p*(1-p))
+    op4 = (np.kron(pZ,  pZ ), (1-p)**2)
+    
+    return noise.mixed_unitary_error([op1,op2,op3,op4])
+
+def c_noise_1qb(fid):
+    '''
+    Currently implements dephasing.
+    '''
+    # First convert from fid to prob.
+    p = (3*fid-1)/2
+    
+    pZ = np.array([
+        [1,0],
+        [0,-1]
+    ])
+    id2 = np.eye(2)
+    op1 = (id2, p)
+    op2 = (pZ , (1-p))
+    
+    return noise.mixed_unitary_error([op1,op2])
+    
 def get_noise(dqpu, p1qb=0.9995, p2qb=0.996, p_epr=0.97, p_spam=0.0039):
     '''
     Generate QISkit noise objects for a generic monolithic as well as D-QPU backends.
