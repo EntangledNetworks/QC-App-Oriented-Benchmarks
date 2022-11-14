@@ -71,6 +71,9 @@ save_plot_images = True
 # Option to show plot images. Useful if it is desired to not show plots while running scripts
 show_plot_images = True
 
+# Option to plot metrics once results for a given app is available.
+plot_metrics_per_app = False
+
 # Option to generate volumetric positioning charts
 do_volumetric_plots = True
 

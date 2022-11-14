@@ -206,7 +206,8 @@ def run(min_qubits=2, max_qubits=8, max_circuits=3, num_shots=100, method=1,
     print("\n********\nZZ ="); print(ZZ_)
         
     # Plot metrics for all circuit sizes
-    metrics.plot_metrics(f"Benchmark Results - Hamiltonian Simulation ({method}) - Qiskit")
+    if metrics.plot_metrics_per_app:
+        metrics.plot_metrics(f"Benchmark Results - Hamiltonian Simulation ({method}) - Qiskit")
 
 
 # if main, execute method

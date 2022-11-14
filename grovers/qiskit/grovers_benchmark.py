@@ -300,7 +300,8 @@ def run(min_qubits=2, max_qubits=6, max_circuits=3, num_shots=100,
     print("\nDiffuser ="); print(diffusion_operator )
 
     # Plot metrics for all circuit sizes
-    metrics.plot_metrics("Benchmark Results - Grover's Search - Qiskit")
+    if metrics.plot_metrics_per_app:
+        metrics.plot_metrics("Benchmark Results - Grover's Search - Qiskit")
 
 
 # if main, execute method

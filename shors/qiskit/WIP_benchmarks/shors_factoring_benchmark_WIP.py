@@ -459,7 +459,8 @@ def run(min_qubits=5, max_circuits=3, max_qubits=10, num_shots=100,
     # print(qc)
 
     # Plot metrics for all circuit sizes
-    metrics.plot_metrics("Benchmark Results - Shor's Factoring Algorithm - Qiskit")
+    if metrics.plot_metrics_per_app:
+        metrics.plot_metrics("Benchmark Results - Shor's Factoring Algorithm - Qiskit")
 
 
 # For interactive_shors_factoring testing
