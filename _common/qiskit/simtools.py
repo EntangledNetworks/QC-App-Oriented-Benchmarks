@@ -4,6 +4,51 @@ import numpy as np
 
 import qiskit
 
+def get_bounding_aq(width,depth):
+    '''
+    Returns bounding AQ.
+    '''
+    w_depth = np.floor(np.sqrt(depth))
+    return max(w_depth, width)
+
+def check_aq(metrics):
+    '''
+    Check whether runs represented in 'metrics' all
+    pass the AQ threshold.
+
+    Returns a 2-tuple, (passfail, aq). If passfail=False,
+    then 'aq' is the bounding value corresponding to dimensions
+    of the first failed circuit. If passfail=True, then all
+    runs passed the AQ threshold and 'aq' is set to -1.
+    '''
+    aq_min = -1
+    passes = True
+
+    for gr in metrics.group_metrics['groups']:
+        passes = True # Track if all runs pass threshold.
+        c_width = int(gr) # Circuit width
+
+        for run in metrics.circuit_metrics[gr]:
+            # Data for a given run.
+            dat = metrics.circuit_metrics[gr][run]
+            
+            # 2-qubit gate count
+            c_depth = dat['tr_n2q']
+
+            # Calculate score with spread
+            fid = dat['fidelity']
+            spread = np.sqrt( fid*(1-fid)/num_shots )
+            score = fid-spread
+            if score < metrics.aq_cutoff:
+                passes = False
+                aq_min = get_bounding_aq(c_width, c_depth)
+                break
+        
+        if not passes:
+            break
+    
+    return passes, aq_min
+
 def rebuild_with_delays(qc, dqpu, delays):
     '''
     Add delay gates into circuit to reflect finite interconnect times.
