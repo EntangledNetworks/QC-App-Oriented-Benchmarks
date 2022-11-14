@@ -175,8 +175,8 @@ def set_execution_target(backend_id='qasm_simulator',
         backend = provider_backend
     
     # handle QASM simulator specially
-    elif backend_id == 'qasm_simulator':
-        backend = Aer.get_backend("qasm_simulator") 
+    elif backend_id=='qasm_simulator' or backend_id=='aer_simulator':
+        backend = Aer.get_backend(backend_id)
 
     elif 'fake' in backend_id:
         backend = getattr(
@@ -368,7 +368,7 @@ def execute_circuit(circuit):
             
         #************************************************
         # Initiate execution (with noise if specified and this is a simulator backend)
-        if this_noise is not None and backend.name().endswith("qasm_simulator"):
+        if this_noise is not None and backend.name().endswith("simulator"):
             logger.info(f"Performing noisy simulation, shots = {shots}")
             
             simulation_circuits = circuit["qc"]
