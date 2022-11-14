@@ -2645,8 +2645,8 @@ def circle_at(x, y, value, type=1, fill=True):
     fc = get_color(value)
     ec = (0.5,0.5,0.5)
     
-    return Circle((x, y), size/2,
-             alpha = 0.7,                       # DEVNOTE: changed to 0.7 from 0.5, to handle only one cell
+    return Circle((x, y), size/3,
+             alpha = 0.9,                       # DEVNOTE: changed to 0.7 from 0.5, to handle only one cell
              edgecolor = ec,
              facecolor = fc,
              fill=fill,
@@ -2674,7 +2674,7 @@ def bkg_box_at(x, y, value):
     return Rectangle((x - size/2, y - size/2), size, size,
              edgecolor = (.75,.75,.75),
              facecolor = (.9,.9,.9),
-             fill=True,
+             fill=False,
              lw=0.5)
              
 def bkg_empty_box_at(x, y, value):
