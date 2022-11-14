@@ -401,9 +401,15 @@ def execute_circuit(circuit):
                 noise_model=this_noise, basis_gates=this_noise.basis_gates,
                 **backend_exec_options_copy)
             '''   
-            job = execute(simulation_circuits, backend, shots=shots,
-                noise_model=this_noise, basis_gates=this_noise.basis_gates,
-                **backend_exec_options_copy)
+            if backend_exec_options['executor']==None:
+                # If a custom executor wasn't supplied, use standard QISkit execute() call.
+                job = execute(simulation_circuits, backend, shots=shots,
+                    noise_model=this_noise, basis_gates=this_noise.basis_gates,
+                    **backend_exec_options_copy)
+            else:
+                # Otherwise, call the custom executor.
+                job = backend_exec_options['executor'](simulation_circuits, backend,\
+                    noise_model=this_noise, shots=shots, **backend_exec_options_copy)
                 
             logger.info(f'Finished Running on noisy simulator - {round(time.time() - st, 5)} (ms)')
             if verbose_time: print(f"  *** qiskit.execute() time = {round(time.time() - st, 5)}")
@@ -739,7 +745,13 @@ def job_complete(job):
     result = None
         
     if job.status() == JobStatus.DONE:
-        result = job.result()
+        if backend_exec_options['postprocessor']==None:
+            # If custom post-processor isn't supplied, load results using standard QISkit syntax.
+            result = job.result()
+        else:
+            # Otherwise, wrap it with the custom postprocessor.
+            result = backend_exec_options['postprocessor'](\
+                job.result(), **backend_exec_options['postprocessor_args'])
         # print("... result = ", str(result))
         
         # process step times, if they exist
