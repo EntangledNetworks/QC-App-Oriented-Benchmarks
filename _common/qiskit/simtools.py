@@ -11,7 +11,7 @@ def get_bounding_aq(width,depth):
     w_depth = np.floor(np.sqrt(depth))
     return max(w_depth, width)
 
-def check_aq(metrics):
+def check_aq(metrics, num_shots):
     '''
     Check whether runs represented in 'metrics' all
     pass the AQ threshold.
