@@ -745,13 +745,13 @@ def job_complete(job):
     result = None
         
     if job.status() == JobStatus.DONE:
-        if backend_exec_options['postprocessor']==None:
+        if backend_exec_options['post-processor']==None:
             # If custom post-processor isn't supplied, load results using standard QISkit syntax.
             result = job.result()
         else:
             # Otherwise, wrap it with the custom postprocessor.
-            result = backend_exec_options['postprocessor'](\
-                job.result(), **backend_exec_options['postprocessor_args'])
+            result = backend_exec_options['post-processor'](\
+                job.result(), **backend_exec_options['post-processor_args'])
         # print("... result = ", str(result))
         
         # process step times, if they exist
