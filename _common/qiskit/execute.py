@@ -409,7 +409,7 @@ def execute_circuit(circuit):
             else:
                 # Otherwise, call the custom executor.
                 job = backend_exec_options['executor'](simulation_circuits, backend,\
-                    noise_model=this_noise, shots=shots, **backend_exec_options_copy)
+                    noise_model=this_noise, shots=shots, **backend_exec_options_copy['executor_args'])
                 
             logger.info(f'Finished Running on noisy simulator - {round(time.time() - st, 5)} (ms)')
             if verbose_time: print(f"  *** qiskit.execute() time = {round(time.time() - st, 5)}")
