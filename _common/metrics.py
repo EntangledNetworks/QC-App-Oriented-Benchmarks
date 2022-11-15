@@ -1159,7 +1159,8 @@ def plot_metrics_all_overlaid (shared_data, backend_id, suptitle=None, imagename
 def plot_metrics_all_merged (shared_data, backend_id, suptitle=None,
             imagename="_ALL-vplot-2", avail_qubits=0,
             is_individual=False, score_metric=None,
-            max_depth=0, suppress_low_fidelity=False):                   
+            max_depth=0, suppress_low_fidelity=False,
+            save_fig_external=False, save_fig_fname=''):
     
     global circuit_metrics
     global group_metrics
@@ -1258,6 +1259,10 @@ def plot_metrics_all_merged (shared_data, backend_id, suptitle=None,
         # do annotation separately, spreading labels for readability
         anno_volumetric_data(ax, depth_base,
                    label=appname, labelpos=(0.4, 0.6), labelrot=15, type=1, fill=False)
+        
+        if save_fig_external:
+            print(f"Saving to directory: {os.getcwd()}")
+            plt.savefig(save_fig_fname)
     
     except Exception as e:
         print(f'ERROR: plot_metrics_all_merged(), failure when creating volumetric positioning chart')
@@ -1402,7 +1407,8 @@ def plot_merged_result_rectangles(shared_data, ax, max_qubits, w_max, num_grads=
 def plot_all_app_metrics(backend_id, do_all_plots=False,
         include_apps=None, exclude_apps=None, suffix="", avail_qubits=0,
         is_individual=False, score_metric=None,
-        max_depth=0, suppress_low_fidelity=False):
+        max_depth=0, suppress_low_fidelity=False,
+        custom_title=''):
 
     global circuit_metrics
     global group_metrics
@@ -1455,8 +1461,12 @@ def plot_all_app_metrics(backend_id, do_all_plots=False,
         '''
 
         # draw the volumetric plot and append the circuit metrics subtitle to the title
-        suptitle = f"Volumetric Positioning - All Applications (Merged)"
-        fulltitle = suptitle + f"\nDevice={backend_id}  {get_timestr()}"
+        if custom_title=='':
+            suptitle = f"Volumetric Positioning - All Applications (Merged)"
+            fulltitle = suptitle + f"\nDevice={backend_id}  {get_timestr()}"
+        else:
+            suptitle = custom_title
+            fulltitle = suptitle
         
         plot_metrics_all_merged(shared_data, backend_id, suptitle=fulltitle, 
                 imagename="_ALL-vplot-2"+suffix, avail_qubits=avail_qubits,
