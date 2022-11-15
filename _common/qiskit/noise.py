@@ -18,11 +18,6 @@ def get_noise(dqpu, p1qb=0.9995, p2qb=0.996, p_epr=0.97, p_spam=0.0039):
     gamma_native_cx = 4*(1-p2qb)/3 # CX gate fidelity
     gamma_native_swap = 4*(1-p2qb**3)/3 # Swap gate fidelity
 
-    # Param set for "MILD" runs.
-    # gamma_native_1qb =4*(1-p1qb)/3 # 1-qb gate fidelity
-    # gamma_native_cx = 16*(1-p2qb)/15 # CX gate fidelity
-    # gamma_native_swap = 16*(1-p2qb**3)/15 # Swap gate fidelity
-
     gamma_epr = 4*(1-p_epr)/3 # EPR state fidelity
 
     # Define noise model. Note that thermal noise is being added in rebuild_with_delays().
